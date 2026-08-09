@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic-settings
+python-dotenv
+sqlalchemy
+
+langchain
+langchain-community
+langchain-openai
+langchain-chroma
+langchain-text-splitters
+langgraph
+
+pypdf

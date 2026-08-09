@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# 虚拟环境
+.venv/
+.venv-clean/
+
+# 环境变量
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# 项目运行数据
+storage/app.db
+storage/uploads/*
+storage/chroma/*
+
+# 保留空目录
+!storage/uploads/.gitkeep
+!storage/chroma/.gitkeep
