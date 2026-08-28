@@ -95,11 +95,18 @@ def test_delete_removes_database_file_and_vectors(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     delete_vectors_mock = Mock()
+    bm25_store_mock = Mock()
 
     monkeypatch.setattr(
         documents_route,
         "delete_document_vectors",
         delete_vectors_mock,
+    )
+
+    monkeypatch.setattr(
+        documents_route,
+        "get_bm25_store",
+        lambda: bm25_store_mock,
     )
 
     upload_response = upload_test_pdf(client)
@@ -126,6 +133,8 @@ def test_delete_removes_database_file_and_vectors(
         document_id=document_id,
         chunk_count=3,
     )
+
+    bm25_store_mock.invalidate.assert_called_once_with()
 
     assert not stored_path.exists()
 

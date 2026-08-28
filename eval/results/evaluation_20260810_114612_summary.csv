@@ -1,0 +1,6 @@
+﻿metric,value
+total_questions,100.0
+overall_pass_rate,99.0
+answerable_pass_rate,98.59
+refusal_accuracy,100.0
+average_latency_ms,4129.75

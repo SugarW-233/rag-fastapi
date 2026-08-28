@@ -39,7 +39,6 @@ def get_llm() -> ChatOpenAI:
     )
 
 
-@lru_cache
 def delete_document_vectors(
     document_id: str,
     chunk_count: int | None,

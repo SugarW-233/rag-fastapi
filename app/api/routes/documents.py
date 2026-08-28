@@ -10,6 +10,7 @@ from app.core.config import settings
 from app.db.database import get_db
 from app.db.models import DocumentRecord
 from app.schemas import DocumentItem, UploadResponse
+from app.services.bm25_store import get_bm25_store
 from app.services.file_storage import (
     EmptyFileError,
     FileTooLargeError,
@@ -19,12 +20,12 @@ from app.services.file_storage import (
 from app.services.ingestion import ingest_file
 from app.services.vector_store import delete_document_vectors
 
+ALLOWED_SUFFIXES = {".pdf", ".txt"}
+
 router = APIRouter(
     prefix="/api/v1/documents",
     tags=["Documents"],
 )
-
-ALLOWED_SUFFIXES = {".pdf", ".txt"}
 
 
 @router.post(
@@ -199,6 +200,9 @@ def delete_document(
             chunk_count=record.chunk_count,
         )
 
+        # Chroma 内容发生变化，下次 BM25 查询时重新构建索引。
+        get_bm25_store().invalidate()
+
         stored_path = settings.upload_dir / record.stored_name
         stored_path.unlink(missing_ok=True)
 
@@ -214,52 +218,3 @@ def delete_document(
             status_code=500,
             detail="删除文档失败",
         ) from exc
-
-    # settings.upload_dir.mkdir(
-    #     parents=True,
-    #     exist_ok=True,
-    # )
-
-    # # 服务器上不直接使用用户提供的文件名
-    # saved_path = settings.upload_dir / f"{document_id}{suffix}"
-
-    # try:
-    #     with saved_path.open("wb") as output_file: #以二进制写入模式打开该路径对应的文件。如果文件不存在，会自动创建；如果已存在，会覆盖。
-    #         shutil.copyfileobj(
-    #             file.file,
-    #             output_file,
-    #         )
-
-    #     result = ingest_file(
-    #         file_path=saved_path,
-    #         original_name=original_name,
-    #         document_id=document_id,
-    #     )
-
-    #     return UploadResponse(
-    #         document_id=document_id,
-    #         file_name=original_name,
-    #         document_count=result["document_count"],
-    #         chunk_count=result["chunk_count"],
-    #         message="文件已成功加入知识库",
-    #     )
-
-    # except ValueError as exc:
-    #     saved_path.unlink(missing_ok=True)
-
-    #     raise HTTPException(
-    #         status_code=400,
-    #         detail=str(exc),
-    #     ) from exc
-
-    # except Exception as exc:
-    #     saved_path.unlink(missing_ok=True)
-
-    #     # 产生环境应记录日志，但不要把完整异常返回给前端
-    #     raise HTTPException(
-    #         status_code=500,
-    #         detail="文件处理失败",
-    #     ) from exc
-
-    # finally:
-    #     file.file.close()
