@@ -41,10 +41,12 @@ jobs:
           python -m pip install -r requirements-dev.txt
 
       - name: Check code with Ruff
-        run: python -m ruff check app tests
+        run: python -m ruff check app tests scripts
 
       - name: Check formatting with Ruff
-        run: python -m ruff format --check app tests
+        run: python -m ruff format --check app tests scripts
 
       - name: Run tests
         run: python -m pytest
+      
+      

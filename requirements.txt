@@ -13,3 +13,7 @@ langchain-text-splitters
 langgraph
 
 pypdf
+
+rank-bm25
+jieba
+sentence-transformers

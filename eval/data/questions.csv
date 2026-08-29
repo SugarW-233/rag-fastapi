@@ -1,0 +1,11 @@
+id,question,should_answer,expected_keywords,expected_source
+q01,系统支持上传哪些文件格式,yes,PDF|TXT,demo_knowledge.txt
+q02,单个上传文件最大是多少,yes,10,demo_knowledge.txt
+q03,系统如何判断文件是否重复,yes,SHA-256,demo_knowledge.txt
+q04,系统使用什么框架构建Web API,yes,FastAPI,demo_knowledge.txt
+q05,文本向量保存在哪里,yes,Chroma,demo_knowledge.txt
+q06,PDF引用中会返回什么位置信息,yes,页码,demo_knowledge.txt
+q07,文档元数据保存在哪里,yes,SQLite,demo_knowledge.txt
+q08,公司的董事长是谁,no,,
+q09,公司的客服电话是多少,no,,
+q10,公司的办公地址在哪里,no,,

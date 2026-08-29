@@ -19,7 +19,21 @@ class Settings(BaseSettings):
 
     chunk_size: int = 800
     chunk_overlap: int = 120
+
+    # 最终交给相关性判断和 LLM 的文档数量。
     top_k: int = 4
+
+    # 混合检索候选数量。
+    dense_candidate_k: int = 20
+    bm25_candidate_k: int = 20
+    fusion_candidate_k: int = 20
+    rrf_k: int = 60
+
+    # Reranker 配置。
+    reranker_model: str = "BAAI/bge-reranker-v2-m3"
+    reranker_batch_size: int = 8
+    reranker_device: str = "cpu"
+    reranker_max_length: int = 512
 
     max_upload_size_mb: int = 10
 
